@@ -1,0 +1,225 @@
+# The deadline calendar. This is the part of the bot that keeps working when
+# every scraper on earth breaks, so it is worth keeping accurate.
+#
+# Every date below is the typical window from past cycles, NOT a confirmed
+# date for this cycle. That is why date_confirmed is false everywhere. The
+# bot adds a "confirm this on the site" line to any unconfirmed reminder.
+#
+# Once you check a program's real date, set the date and flip date_confirmed
+# to true. Do a pass on this file once a semester and it stays useful for
+# whoever runs the club after you.
+#
+# Fields:
+#   name, org, url        required
+#   deadline              YYYY-MM-DD
+#   date_confirmed        true once you have verified it for this cycle
+#   recurs_annually       true rolls the date forward every year
+#   remind_days           overrides the default 45 / 21 / 7 / 2
+#   roles                 which Discord roles get pinged
+#   tags                  used for forum tags if you set those up
+#   cc_friendly           true if community college students are eligible
+
+programs:
+
+  # ------------------------------------------------ federal and national lab
+
+  - name: NASA OSTEM Internships (Summer 2027)
+    org: NASA
+    url: https://intern.nasa.gov/
+    deadline: 2027-02-26
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: true
+    stipend: Paid, varies by center
+    eligibility: US citizen, 2.9 GPA minimum, at least 16 years old, enrolled at least half time. Community college students are eligible.
+    summary: One application feeds every NASA center. Pick multiple opportunities inside the portal, do not just submit one.
+    notes: Start the application weeks early. It asks for a transcript and a recommender who has to submit separately.
+    roles: [Engineering, Physics, CS]
+    tags: [internship]
+
+  - name: DOE Community College Internships, CCI (Summer term)
+    org: Department of Energy
+    url: https://science.osti.gov/wdts/cci
+    deadline: 2027-01-12
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: true
+    stipend: Weekly stipend plus travel and housing help
+    eligibility: Built specifically for community college students. US citizen or permanent resident, 18 or older.
+    summary: Ten weeks at a national lab doing technical work with a scientist or engineer as a mentor. This is the single best fit on this list for a Pierce student.
+    notes: Applications go through Zintellect. You need two recommenders and a transcript.
+    roles: [Engineering, Physics, Chem, Bio, CS]
+    tags: [internship, research]
+
+  - name: DOE Community College Internships, CCI (Spring term)
+    org: Department of Energy
+    url: https://science.osti.gov/wdts/cci
+    deadline: 2026-10-01
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: true
+    eligibility: Community college students, US citizen or permanent resident.
+    summary: Same program as the summer round, smaller cohort, far less competition.
+    roles: [Engineering, Physics, Chem, Bio, CS]
+    tags: [internship, research]
+
+  - name: DOE SULI (Summer term)
+    org: Department of Energy
+    url: https://science.osti.gov/wdts/suli
+    deadline: 2027-01-12
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: true
+    eligibility: Undergraduates including community college students who have completed at least one year of college.
+    summary: The research-track sibling of CCI. Same labs, same application system, aimed at students continuing to a bachelor's.
+    roles: [Physics, Chem, Bio, Engineering]
+    tags: [internship, research]
+
+  - name: NASA Community College Aerospace Scholars (NCAS)
+    org: NASA
+    url: https://www.nasa.gov/learning-resources/nasa-community-college-aerospace-scholars/
+    deadline: 2026-11-06
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: true
+    eligibility: Community college students only. US citizen.
+    summary: Online course first, then a selected group goes to a NASA center for a team mission challenge. Built for exactly our student population.
+    roles: [Engineering, Physics, CS]
+    tags: [internship]
+
+  - name: JPL Student Internships (SIRI and summer programs)
+    org: NASA JPL
+    url: https://www.jpl.nasa.gov/careers/internships-and-fellowships/
+    deadline: 2027-01-15
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: true
+    eligibility: SIRI takes local two year college students during the school term and needs a faculty sponsor at your college. Summer programs run on their own calendar.
+    summary: Twenty minutes up the road in Pasadena. The faculty sponsor requirement is the real gate, so talk to a professor long before the deadline.
+    notes: Rolling rather than one hard date for some tracks. Treat this reminder as a nudge to check, not a countdown.
+    roles: [Engineering, Physics, CS]
+    tags: [internship, research]
+
+  # ------------------------------------------------------------ REU programs
+
+  - name: NSF REU application season opens
+    org: National Science Foundation
+    url: https://www.nsf.gov/crssprgm/reu/reu_search.jsp
+    deadline: 2027-02-01
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: true
+    remind_days: [60, 45, 30, 14, 7]
+    eligibility: Varies per site. Many REUs do accept community college students, but some require sophomore standing or a declared major at a four year school. Read each site's page.
+    summary: Not one deadline, a few hundred of them, mostly clustered between early January and early March. Most now run through the NSF ETAP common application so one profile covers several sites.
+    notes: Make an ETAP account early at etap.nsf.gov. Apply to eight or ten sites, not two.
+    roles: [Physics, Chem, Bio, Engineering, CS]
+    tags: [research]
+
+  - name: Caltech SURF and WAVE Fellowships
+    org: Caltech
+    url: https://sfp.caltech.edu/
+    deadline: 2027-01-13
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: false
+    eligibility: Check carefully. Some tracks require enrollment at a four year institution, others are open. Worth an email to the program office.
+    summary: Local, well funded, extremely competitive. Needs a research proposal written with a mentor, so it is a months-long process not a weekend one.
+    roles: [Physics, Chem, Bio, Engineering]
+    tags: [research]
+
+  # --------------------------------------------------------- scholarships
+
+  - name: Jack Kent Cooke Undergraduate Transfer Scholarship
+    org: Jack Kent Cooke Foundation
+    url: https://www.jkcf.org/our-scholarships/undergraduate-transfer-scholarship/
+    deadline: 2027-01-11
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: true
+    stipend: Up to $55,000 a year toward a bachelor's degree
+    eligibility: Community college students transferring to a four year school. Strong academic record and financial need.
+    summary: The largest transfer scholarship in the country and it exists only for students in our position. If you are transferring, this belongs on your list.
+    notes: The application is long. Start in October, not January.
+    roles: [Physics, Chem, Bio, Engineering, CS]
+    tags: [scholarship]
+
+  - name: SMART Scholarship for Service
+    org: Department of Defense
+    url: https://www.smartscholarship.org/smart
+    deadline: 2026-12-01
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: false
+    stipend: Full tuition, stipend, and a guaranteed civilian DoD job after graduation
+    eligibility: US citizen, 3.0 GPA, pursuing a STEM degree. Usually requires enrollment at or acceptance to a four year institution, so check timing against your transfer.
+    summary: Pays for the rest of your degree and hands you a job. The trade is a service commitment, one year of work per year of funding.
+    roles: [Engineering, Physics, CS, Chem]
+    tags: [scholarship]
+
+  - name: Hispanic Scholarship Fund
+    org: HSF
+    url: https://www.hsf.net/scholarship
+    deadline: 2027-02-15
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: true
+    eligibility: Hispanic heritage, 2.5 GPA for undergraduates, US citizen or eligible non-citizen. Community college students qualify.
+    summary: One application puts you in front of a large pool of corporate and foundation awards.
+    roles: [Engineering, Physics, Chem, Bio, CS]
+    tags: [scholarship]
+
+  - name: SHPE Scholarship Program
+    org: Society of Hispanic Professional Engineers
+    url: https://shpe.org/students/scholarships/
+    deadline: 2027-04-30
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: true
+    eligibility: SHPE membership required, which is cheap for students. Community college students have their own award category.
+    summary: Smaller awards than HSF but a much smaller applicant pool, so the odds are better.
+    roles: [Engineering, CS]
+    tags: [scholarship]
+
+  # --------------------------------------------------------- conferences
+
+  - name: SACNAS NDiSTEM abstract deadline
+    org: SACNAS
+    url: https://www.sacnas.org/conference
+    deadline: 2027-05-15
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: true
+    eligibility: Open to undergraduates including community college students. Travel scholarships are a separate, earlier deadline.
+    summary: The largest diversity in STEM conference in the country. Presenting a poster here is a real line on a transfer application.
+    notes: Check the travel scholarship deadline separately, it usually closes months before the abstract deadline.
+    roles: [Physics, Chem, Bio, Engineering, CS]
+    tags: [conference]
+
+  - name: AAS Winter Meeting undergraduate abstract deadline
+    org: American Astronomical Society
+    url: https://aas.org/meetings
+    deadline: 2026-10-06
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: true
+    eligibility: Open to anyone with results to show, including undergraduates.
+    summary: Worth flagging for anyone doing astronomy work, including the radio observatory project.
+    roles: [Physics]
+    tags: [conference]
+
+  # --------------------------------------------------------------- on campus
+
+  - name: Path2Research (P2R) at Pierce
+    org: Pierce College MESA
+    url: https://www.lapc.edu/mesa
+    deadline: 2027-09-17
+    date_confirmed: false
+    recurs_annually: true
+    remind_days: [21, 7, 2]
+    cc_friendly: true
+    eligibility: Pierce students. Runs ten weeks, Thursdays 5:30 to 6:30 PM in the MESA Center.
+    summary: Student-run research program, paired students, weekly workshops, ends in a poster at a symposium. Closest research experience you can get without leaving campus.
+    notes: Update this entry with the real sign-up date each fall.
+    roles: [Physics, Chem, Bio, Engineering, CS]
+    tags: [research]

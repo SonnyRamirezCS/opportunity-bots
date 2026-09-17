@@ -1,0 +1,179 @@
+# opportunity-bots config
+# Everything you will normally touch lives in this file and programs.yml.
+
+# "forum" makes each opportunity its own post in a forum channel.
+# "text" posts them as regular messages. Use forum for #research-internships.
+channel_type: forum
+
+bot_username: Opportunity Bot
+bot_avatar_url:            # optional, paste an image URL
+
+state_file: seen.json
+max_posts_per_run: 8       # hard cap so the channel never gets flooded
+seconds_between_posts: 2
+
+# If true, feed items that match no major role are skipped entirely.
+# Leave false at first so you can see what the filters are actually catching.
+require_role_match: false
+
+# ---------------------------------------------------------------- role IDs
+# Discord role IDs, not names. To get one: Server Settings > Roles > click the
+# role > three dots > Copy Role ID. Developer Mode has to be on first
+# (User Settings > Advanced > Developer Mode).
+# Leave a role blank and it just never gets pinged.
+role_ids:
+  Physics: ""
+  Engineering: ""
+  Bio: ""
+  Chem: ""
+  CS: ""
+
+# Which words in a posting cause which role to get pinged.
+# A role only gets pinged when one of its words shows up, which is the whole
+# point. Nobody mutes the server over notifications that are actually for them.
+role_keywords:
+  Physics:
+    - physics
+    - optics
+    - photonics
+    - astronomy
+    - astrophysics
+    - quantum
+    - materials
+    - accelerator
+  Engineering:
+    - engineer
+    - electrical
+    - hardware
+    - embedded
+    - firmware
+    - robotics
+    - mechatronics
+    - controls
+    - aerospace
+    - circuit
+    - PCB
+    - FPGA
+    - RF
+    - mechanical
+    - civil
+  Bio:
+    - biology
+    - biomed
+    - neuro
+    - genomic
+    - ecology
+    - microbio
+    - bioinformatics
+    - cell
+  Chem:
+    - chemistry
+    - chemical
+    - biochem
+    - materials science
+    - polymer
+    - analytical
+  CS:
+    - software
+    - computer science
+    - machine learning
+    - data science
+    - AI
+    - cybersecurity
+    - full stack
+    - backend
+
+# ------------------------------------------------------------- forum tags
+# Optional. Only used when channel_type is forum and the channel has tags.
+# Right click the tag is not a thing, so: open the channel settings, and grab
+# tag IDs from the channel edit URL, or just leave this empty.
+forum_tag_ids:
+  internship: ""
+  research: ""
+  scholarship: ""
+  conference: ""
+  deadline: ""
+
+# ------------------------------------------------------------------ feeds
+feeds:
+  # Industry internships, refreshed daily by Simplify and the Pitt CS club.
+  #
+  # OFF ON PURPOSE. Most of these postings want juniors and seniors at four
+  # year schools, so for a room of first and second year Pierce students they
+  # bury the programs people can actually get. Leave this off for the first
+  # month and let the deadline calendar carry the channel.
+  #
+  # To turn it on later: set enabled to true. The locations list below is
+  # already narrowed to LA and the South Bay, because local aerospace does
+  # hire from community colleges and nationwide big tech mostly does not.
+  - type: simplify
+    label: Simplify
+    enabled: false
+    url: https://raw.githubusercontent.com/SimplifyJobs/Summer2027-Internships/dev/.github/scripts/listings.json
+    max_age_days: 8
+    categories:
+      - Hardware
+      - AI/ML/Data
+    terms:                 # leave empty to accept every term
+      - Summer 2027
+      - Fall 2026
+      - Spring 2027
+    title_keywords:        # a posting must contain at least one of these
+      - electrical
+      - hardware
+      - embedded
+      - firmware
+      - robotics
+      - controls
+      - rf
+      - analog
+      - fpga
+      - test engineer
+      - systems engineer
+      - research
+      - aerospace
+      - mechanical
+    title_blocklist:       # never post these
+      - senior
+      - staff
+      - principal
+      - manager
+      - phd
+      - graduate
+    degrees:               # a posting with no degree listed still passes
+      - Associate's
+      - Bachelor's
+    locations:             # LA and the South Bay only. Empty means nationwide.
+      - Los Angeles
+      - Pasadena
+      - El Segundo
+      - Long Beach
+      - Torrance
+      - Redondo Beach
+      - Hawthorne
+      - Burbank
+      - Van Nuys
+      - Northridge
+      - Woodland Hills
+      - Santa Monica
+      - Remote
+    location_blocklist:
+      - Canada
+      - India
+      - United Kingdom
+      - Israel
+      - Taiwan
+
+  # Generic RSS. Add any program blog or lab news page that publishes a feed.
+  # Verify a feed in a browser before enabling it, plenty of these go stale.
+  - type: rss
+    label: Example program feed
+    enabled: false
+    kind: research
+    url: https://example.edu/undergrad-research/feed
+    max_age_days: 14
+    keywords:
+      - undergraduate
+      - REU
+      - internship
+      - fellowship
