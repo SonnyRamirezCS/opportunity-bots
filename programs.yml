@@ -51,15 +51,17 @@ programs:
     roles: ["Engineering", "Natural Sciences", "Computer Science", "Math & Data", "Business"]
     tags: [internship, research]
 
-  - name: DOE Community College Internships, CCI (Spring term)
+  - name: DOE Community College Internships, CCI (Spring 2027 term)
     org: Department of Energy
     url: https://science.osti.gov/wdts/cci
-    deadline: 2026-10-01
-    date_confirmed: false
+    deadline: 2026-09-30
+    date_confirmed: true
     recurs_annually: true
     cc_friendly: true
+    stipend: Paid, 10 weeks at a national lab
     eligibility: Community college students, US citizen or permanent resident.
-    summary: Same program as the summer round, smaller cohort, far less competition.
+    summary: Ten weeks at one of 17 DOE labs, January through May, so it runs during the semester rather than over summer. Smaller cohort than the summer round and far less competition.
+    notes: Closes 5:00 PM Eastern, which is 2:00 PM Pacific. The last day is really a half day. You need a transcript and recommendation letters, and recommenders submit separately, so ask them now.
     roles: ["Engineering", "Natural Sciences", "Computer Science", "Math & Data", "Business"]
     tags: [internship, research]
 
