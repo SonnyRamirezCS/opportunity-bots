@@ -106,13 +106,15 @@ role_keywords:
 #       comes from the program's category and tags in programs.yml
 #   deadline
 #       goes on everything you apply or submit for. Talks don't get it.
+#   closed ("Closed", 1550215852111171664) is not used by the bot. Add it by
+#   hand once a deadline passes; a webhook can't change tags after posting.
 forum_tag_ids:
-  internship: ""     # Internship
-  research: ""       # REU
-  scholarship: ""    # Scholarship
-  conference: ""     # Conference
-  talk: ""           # Talk/Workshop
-  deadline: ""       # Deadline
+  internship: "1550215790333010011"     # Internship
+  research: "1550215766819733654"       # REU
+  scholarship: "1550215810830835783"    # Scholarship
+  conference: "1550215836420014120"     # Conference
+  talk: "1553894640208445460"           # Talk/Workshop
+  deadline: "1550215732330110996"       # Deadline
 
 # ------------------------------------------------------------------ feeds
 feeds:
