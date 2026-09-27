@@ -19,7 +19,7 @@ import yaml
 import deadlines as deadlines_mod
 import sources as sources_mod
 from discord_client import DiscordPoster, build_item
-from state import Seen
+from state import Seen, Threads
 
 
 def load_yaml(path):
@@ -56,6 +56,7 @@ def main():
     )
 
     seen = Seen(cfg.get("state_file", "seen.json"))
+    threads = Threads(cfg.get("threads_file", "threads.json"))
     role_ids = {k: str(v) for k, v in (cfg.get("role_ids") or {}).items() if v}
     role_rules = cfg.get("role_keywords") or {}
     tag_ids = cfg.get("forum_tag_ids") or {}
@@ -69,10 +70,22 @@ def main():
         programs = load_yaml(args.programs).get("programs", [])
         print(f"\n== deadlines ({len(programs)} programs tracked)")
         for prog, target, days_left, mark in deadlines_mod.due_reminders(programs):
-            item = deadlines_mod.build_reminder(prog, target, days_left, role_ids, mark)
-            if seen.has(item["source"], item["id"]):
+            full = deadlines_mod.build_reminder(prog, target, days_left, role_ids, mark)
+            if seen.has(full["source"], full["id"]):
                 continue
-            item["tag_ids"] = _tags_for(prog.get("tags", []), tag_ids)
+            names = _tag_names_for(prog)
+            full["tag_names"] = names
+            full["tag_ids"] = _tags_for(names, tag_ids)
+
+            existing = threads.get(full["thread_key"])
+            if existing:
+                # Already has a post this cycle, so reply inside it.
+                item = deadlines_mod.build_reminder(prog, target, days_left,
+                                                    role_ids, mark, reply=True)
+                item["thread_id"] = existing
+                item["_new_post"] = full        # fallback if that post is gone
+            else:
+                item = full
             queue.append(item)
         print(f"== deadlines: {len(queue)} due today")
 
@@ -115,11 +128,18 @@ def main():
     print(f"\n== {len(queue)} item(s) queued, posting up to {max_posts}")
 
     for item in queue[:max_posts]:
-        ok = poster.post(item)
-        if ok:
+        result = poster.post(item)
+        if not result and result.thread_missing and item.get("_new_post"):
+            print("  that post seems to be gone, starting a new one")
+            threads.forget(item["thread_key"])
+            item = item["_new_post"]
+            result = poster.post(item)
+        if result:
             posted += 1
             if not args.dry_run:
                 seen.add(item["source"], item["id"])
+                if item.get("thread_key") and result.thread_id and not item.get("thread_id"):
+                    threads.set(item["thread_key"], result.thread_id)
 
     skipped = max(0, len(queue) - max_posts)
     if skipped:
@@ -127,12 +147,23 @@ def main():
 
     if not args.dry_run:
         seen.save()
+        threads.save()
 
     print(f"\ndone {dt.datetime.now():%Y-%m-%d %H:%M}: posted {posted}")
 
 
 def _tags_for(names, tag_ids):
-    return [str(tag_ids[n]) for n in names if tag_ids.get(n)]
+    return [str(tag_ids[n]) for n in names if tag_ids.get(n)][:5]
+
+
+def _tag_names_for(prog):
+    """The program's own tags, plus its category, plus Deadline for anything
+    you have to apply or submit for. Talks are just events, so no Deadline."""
+    kind = deadlines_mod.category_of(prog)
+    names = [kind] + list(prog.get("tags") or [])
+    if kind != "talk":
+        names.append("deadline")
+    return list(dict.fromkeys(names))
 
 
 if __name__ == "__main__":

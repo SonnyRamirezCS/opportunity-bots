@@ -40,11 +40,13 @@ jobs:
       - name: Save what was posted
         if: ${{ inputs.dry_run != true }}
         run: |
-          if [[ -n "$(git status --porcelain seen.json)" ]]; then
+          touch threads.json
+          if [[ -n "$(git status --porcelain seen.json threads.json)" ]]; then
             git config user.name "opportunity-bots"
             git config user.email "actions@github.com"
-            git add seen.json
+            git add seen.json threads.json
             git commit -m "state: $(date -u +%Y-%m-%d)"
+            git pull --rebase
             git push
           else
             echo "nothing new today"

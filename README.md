@@ -20,8 +20,24 @@ four year schools, so at launch they would bury the programs our members can
 actually get. To turn it on later, set `enabled: true` on the simplify feed in
 `config.yml`. The location filter is already narrowed to LA and the South Bay.
 
-Each post goes in as its own forum thread with the deadline, eligibility,
-whether community college students qualify, and the link.
+It tracks five kinds of things: internships, research programs (REUs),
+scholarships, conferences and hackathons, and talks and workshops. In-person
+stuff is SoCal or online, plus farther conferences only when there is travel
+money.
+
+Each program gets **one forum post per cycle**. The first reminder makes the
+post, with the deadline, eligibility, whether community college students
+qualify, and the link. Every reminder after that is a **reply inside that same
+post**, which bumps it back to the top of the forum instead of making a
+duplicate. If someone deletes the post, the next reminder just starts a new
+one.
+
+Posts get forum tags automatically (Internship, REU, Scholarship, Conference,
+Talk/Workshop, plus Deadline on anything you apply for) once the tag IDs are
+in `config.yml`. The steps to find them are written right above that section.
+
+Talks remind 7 days and 1 day before. Everything else reminds 45, 21, 7 and 2
+days before. Any program can override that with `remind_days`.
 
 ## Setup
 
@@ -116,9 +132,13 @@ Anything held back by the cap is not lost, it goes out the next morning.
 
 ## The part that needs a human
 
-Every date in `programs.yml` is the typical window from a previous cycle, not
-a confirmed date. That is why `date_confirmed: false` is set on all of them,
-and why the bot adds a "confirm this on the site" line to those reminders.
+Some dates in `programs.yml` are checked for this cycle (`date_confirmed:
+true`) and some are guesses from last year (`false`). The bot adds a "confirm
+this on the site" line to the guesses. When a yearly program rolls over to
+next year, it counts as unconfirmed again automatically.
+
+Talks and one-time events have `recurs_annually: false`, so they just stop
+after they happen. Add new ones as you hear about them.
 
 Once a semester, sit down for twenty minutes, open each program's page, fix
 the dates, and flip `date_confirmed: true` on the ones you checked. That is
@@ -135,11 +155,14 @@ president knows it is their job.
 | `sources.py` | fetchers for the Simplify list and any RSS feed |
 | `deadlines.py` | works out which reminders are due |
 | `discord_client.py` | builds and sends the webhook post |
-| `state.py` | `seen.json`, so nothing posts twice |
+| `state.py` | `seen.json` and `threads.json` |
+| `seen.json` | every reminder already sent, so nothing posts twice |
+| `threads.json` | which forum post belongs to which program, so reminders reply there |
 
 ## Notes
 
-The Action commits `seen.json` back to the repo after each run. That is how it
+The Action commits `seen.json` and `threads.json` back to the repo after each
+run. That is how it
 remembers what it already posted. If you ever want it to re-post everything,
 empty that file back to `{}`.
 

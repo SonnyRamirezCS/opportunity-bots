@@ -2,13 +2,14 @@
 # Everything you will normally touch lives in this file and programs.yml.
 
 # "forum" makes each opportunity its own post in a forum channel.
-# "text" posts them as regular messages. Use forum for #research-internships.
+# "text" posts them as regular messages. Use forum for #opportunities.
 channel_type: forum
 
 bot_username: Opportunity Bot
 bot_avatar_url:            # optional, paste an image URL
 
 state_file: seen.json
+threads_file: threads.json   # which forum post belongs to which program
 max_posts_per_run: 8       # hard cap so the channel never gets flooded
 seconds_between_posts: 2
 
@@ -90,15 +91,28 @@ role_keywords:
     - supply chain
 
 # ------------------------------------------------------------- forum tags
-# Optional. Only used when channel_type is forum and the channel has tags.
-# Right click the tag is not a thing, so: open the channel settings, and grab
-# tag IDs from the channel edit URL, or just leave this empty.
+# The bot tags each new post automatically. Paste each tag's ID on the right.
+# A tag left blank is just skipped, nothing breaks.
+#
+# How to get the IDs (Discord in a web browser, not the app):
+#   1. Open discord.com/app in Chrome and click the #opportunities forum
+#   2. Press F12, click the Network tab, type "channels" in its filter box
+#   3. Press F5 to reload the page, then click the #opportunities forum again
+#   4. Click the request whose name is the forum's ID, then the Preview tab
+#   5. Open "available_tags". Each tag has a name and an id. Copy the ids here.
+#
+# Which tag goes on what:
+#   internship / research / scholarship / conference / talk
+#       comes from the program's category and tags in programs.yml
+#   deadline
+#       goes on everything you apply or submit for. Talks don't get it.
 forum_tag_ids:
-  internship: ""
-  research: ""
-  scholarship: ""
-  conference: ""
-  deadline: ""
+  internship: ""     # Internship
+  research: ""       # REU
+  scholarship: ""    # Scholarship
+  conference: ""     # Conference
+  talk: ""           # Talk/Workshop
+  deadline: ""       # Deadline
 
 # ------------------------------------------------------------------ feeds
 feeds:

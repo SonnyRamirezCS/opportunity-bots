@@ -18,6 +18,17 @@
 #   roles                 which Discord roles get pinged
 #   tags                  used for forum tags if you set those up
 #   cc_friendly           true if community college students are eligible
+#   category              internship, research, scholarship, conference or talk
+#                         (if left out, the first tag is used)
+#   event_date            when the thing actually happens, if that is not
+#                         the same as the deadline (conferences)
+#   location              shown on the post. SoCal and virtual stuff always
+#                         goes in; farther away only if there is travel money
+#   deadline_label        what to call the date. Defaults to "Deadline", or
+#                         "Date" for talks. Use "Registration opens" etc.
+#
+# Talks remind 7 days and 1 day out by default. Everything else 45/21/7/2.
+# The first reminder makes a forum post. Later ones reply inside it.
 
 programs:
 
@@ -79,13 +90,14 @@ programs:
 
   - name: NASA Community College Aerospace Scholars (NCAS)
     org: NASA
-    url: https://www.nasa.gov/learning-resources/nasa-community-college-aerospace-scholars/
-    deadline: 2026-11-06
-    date_confirmed: false
+    url: https://nasa-ncas.org/
+    deadline: 2026-09-28
+    date_confirmed: true
     recurs_annually: true
     cc_friendly: true
     eligibility: Community college students only. US citizen.
     summary: Online course first, then a selected group goes to a NASA center for a team mission challenge. Built for exactly our student population.
+    notes: The deadline is for finishing sign-up and eligibility paperwork. After that the course has its own due dates (Nov 2 and Nov 30), all on nasa-ncas.org.
     roles: ["Engineering", "Natural Sciences", "Computer Science"]
     tags: [internship]
 
@@ -135,12 +147,12 @@ programs:
   - name: Jack Kent Cooke Undergraduate Transfer Scholarship
     org: Jack Kent Cooke Foundation
     url: https://www.jkcf.org/our-scholarships/undergraduate-transfer-scholarship/
-    deadline: 2027-01-11
-    date_confirmed: false
+    deadline: 2026-12-09
+    date_confirmed: true
     recurs_annually: true
     cc_friendly: true
     stipend: Up to $55,000 a year toward a bachelor's degree
-    eligibility: Community college students transferring to a four year school. Strong academic record and financial need.
+    eligibility: Community college students transferring to a four year school in fall 2027. 3.5 GPA or higher, sophomore standing by January 1, and family income up to about $95k.
     summary: The largest transfer scholarship in the country and it exists only for students in our position. If you are transferring, this belongs on your list.
     notes: The application is long. Start in October, not January.
     roles: ["Engineering", "Natural Sciences", "Computer Science", "Math & Data", "Business"]
@@ -149,7 +161,7 @@ programs:
   - name: SMART Scholarship for Service
     org: Department of Defense
     url: https://www.smartscholarship.org/smart
-    deadline: 2026-12-01
+    deadline: 2026-12-04
     date_confirmed: false
     recurs_annually: true
     cc_friendly: false
@@ -173,13 +185,15 @@ programs:
 
   - name: SHPE Scholarship Program
     org: Society of Hispanic Professional Engineers
-    url: https://shpe.org/students/scholarships/
-    deadline: 2027-04-30
+    url: https://shpe.org/engage/programs/scholarshpe/
+    deadline: 2027-02-16
     date_confirmed: false
     recurs_annually: true
     cc_friendly: true
     eligibility: SHPE membership required, which is cheap for students. Community college students have their own award category.
     summary: Smaller awards than HSF but a much smaller applicant pool, so the odds are better.
+    notes: Last cycle the application was only open for two weeks in February, so join SHPE now.
+    remind_days: [60, 21, 7, 2]
     roles: ["Engineering", "Computer Science"]
     tags: [scholarship]
 
@@ -200,13 +214,16 @@ programs:
 
   - name: AAS Winter Meeting undergraduate abstract deadline
     org: American Astronomical Society
-    url: https://aas.org/meetings
-    deadline: 2026-10-06
-    date_confirmed: false
+    url: https://aas.org/meetings/aas249/dates-deadlines
+    deadline: 2026-10-05
+    date_confirmed: true
+    event_date: 2027-01-10
+    location: Salt Lake City, UT (travel grants available)
     recurs_annually: true
     cc_friendly: true
     eligibility: Open to anyone with results to show, including undergraduates.
-    summary: Worth flagging for anyone doing astronomy work, including the radio observatory project.
+    summary: The main US astronomy meeting, January 10 to 14. Worth it for anyone doing astronomy work, including the radio observatory project.
+    notes: The FAMOUS travel grant (up to $1,000) is due Nov 2 and gets its own reminder.
     roles: ["Natural Sciences"]
     tags: [conference]
 
@@ -225,3 +242,401 @@ programs:
     notes: Update this entry with the real sign-up date each fall.
     roles: ["Engineering", "Natural Sciences", "Computer Science", "Math & Data", "Business"]
     tags: [research]
+
+  # --------------------------------------------------- more scholarships
+
+  - name: UC Transfer Application, Fall 2027
+    category: scholarship
+    org: University of California
+    url: https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-transfer/
+    deadline: 2026-11-30
+    date_confirmed: true
+    recurs_annually: true
+    cc_friendly: true
+    remind_days: [60, 30, 14, 7, 2]
+    eligibility: Community college students transferring to any UC.
+    summary: The UC application is open October 1 to November 30. Getting it in on time is also how you get considered for UC campus scholarships.
+    notes: Ask the Pierce Transfer Center to look over your personal insight questions before you submit.
+    roles: ["Engineering", "Natural Sciences", "Computer Science", "Math & Data", "Business"]
+    tags: [scholarship]
+
+  - name: Phi Theta Kappa Transfer Scholarships
+    category: scholarship
+    org: Phi Theta Kappa
+    url: https://www.ptk.org/scholarships/apply-now/
+    deadline: 2026-12-01
+    date_confirmed: true
+    recurs_annually: true
+    cc_friendly: true
+    eligibility: Community college students who are PTK members.
+    summary: One PTK application covers several transfer scholarships and the All-USA Academic Team.
+    roles: ["Engineering", "Natural Sciences", "Computer Science", "Math & Data", "Business"]
+    tags: [scholarship]
+
+  - name: Barry Goldwater Scholarship
+    category: scholarship
+    org: Goldwater Foundation
+    url: https://goldwaterscholarship.gov/important-dates/
+    deadline: 2027-01-29
+    date_confirmed: true
+    recurs_annually: true
+    cc_friendly: true
+    remind_days: [75, 45, 21, 7]
+    stipend: Up to $7,500 a year
+    eligibility: Sophomores at two year colleges can apply, but you have to be nominated by your school. Pierce's internal deadline is earlier than the national one.
+    summary: One of the best known undergrad research scholarships in the country, for students planning research careers in STEM.
+    notes: Ask the Pierce Honors or Transfer office who the Goldwater contact is, well before January.
+    roles: ["Engineering", "Natural Sciences", "Computer Science", "Math & Data"]
+    tags: [scholarship]
+
+  - name: NOAA Hollings Undergraduate Scholarship
+    category: scholarship
+    org: NOAA
+    url: https://www.noaa.gov/office-education/hollings-scholarship
+    deadline: 2027-01-29
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: true
+    stipend: Money for junior and senior year plus a paid summer internship
+    eligibility: Community college students can apply if they are applying to a four year school. You need proof of acceptance by May.
+    summary: Pays for your last two years and puts you in a paid NOAA internship the summer in between.
+    roles: ["Engineering", "Natural Sciences", "Computer Science", "Math & Data"]
+    tags: [scholarship]
+
+  - name: Cal Grant priority deadline (FAFSA or CA Dream Act)
+    category: scholarship
+    org: California Student Aid Commission
+    url: https://www.csac.ca.gov/post/important-dates-and-deadlines
+    deadline: 2027-03-02
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: true
+    eligibility: California students. March 2 is the one that matters if you will be at a UC or CSU next year.
+    summary: File the FAFSA or the CA Dream Act application by March 2 to be considered for Cal Grant money when you transfer. It opens October 1.
+    roles: ["Engineering", "Natural Sciences", "Computer Science", "Math & Data", "Business"]
+    tags: [scholarship]
+
+  - name: SPS Peggy Dixon Two-Year Scholarship
+    category: scholarship
+    org: Society of Physics Students
+    url: https://students.aip.org/peggy-dixon-two-year-scholarship
+    deadline: 2027-03-15
+    date_confirmed: true
+    recurs_annually: true
+    cc_friendly: true
+    stipend: $2,500
+    eligibility: Made for students going from a two year college into a physics bachelor's. SPS national membership and intro physics required.
+    summary: Small applicant pool and written for exactly our situation. If you are transferring into physics, apply.
+    roles: ["Natural Sciences", "Engineering"]
+    tags: [scholarship]
+
+  - name: AWIS Kirsten R. Lorentzen Award
+    category: scholarship
+    org: Society of Physics Students
+    url: https://students.aip.org/awis-kirsten-r-lorentzen-award
+    deadline: 2027-03-15
+    date_confirmed: true
+    recurs_annually: true
+    cc_friendly: true
+    stipend: $2,500
+    eligibility: Women studying physics or geoscience, sophomore or junior, SPS national member, US citizen or permanent resident.
+    summary: Award for women in physics or geoscience who also do something outside the classroom.
+    roles: ["Natural Sciences"]
+    tags: [scholarship]
+
+  - name: Foundation for Pierce College Scholarships
+    category: scholarship
+    org: Foundation for Pierce College
+    url: https://thefoundationforpiercecollege.org/scholarships
+    deadline: 2027-04-30
+    date_confirmed: true
+    recurs_annually: true
+    cc_friendly: true
+    remind_days: [60, 30, 14, 3]
+    eligibility: Pierce students only.
+    summary: One application puts you in the running for a lot of donor scholarships at once. Opens March 1. Only Pierce students can apply, so the odds are good.
+    roles: ["Engineering", "Natural Sciences", "Computer Science", "Math & Data", "Business"]
+    tags: [scholarship]
+
+  - name: Great Minds in STEM Scholarships
+    category: scholarship
+    org: Great Minds in STEM
+    url: https://greatmindsinstem.org/gmis-scholarship-application/gmis-scholarships/gmis-scholarship-guidelines/
+    deadline: 2027-05-07
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: true
+    eligibility: Two year college students can apply. 3.0 GPA for the merit awards.
+    summary: STEM scholarships with a focus on underrepresented students.
+    roles: ["Engineering", "Natural Sciences", "Computer Science", "Math & Data"]
+    tags: [scholarship]
+
+  - name: Coca-Cola Leaders of Promise (PTK)
+    category: scholarship
+    org: Phi Theta Kappa
+    url: https://www.ptk.org/scholarships/apply-now/
+    deadline: 2027-05-17
+    date_confirmed: true
+    recurs_annually: true
+    cc_friendly: true
+    eligibility: PTK members still working on their associate degree.
+    summary: For PTK members who will still be at Pierce next year.
+    roles: ["Engineering", "Natural Sciences", "Computer Science", "Math & Data", "Business"]
+    tags: [scholarship]
+
+  # ------------------------------------------ conferences and hackathons
+
+  - name: SACNAS NDiSTEM 2026 registration
+    category: conference
+    org: SACNAS
+    url: https://www.sacnas.org/conference
+    deadline: 2026-10-04
+    event_date: 2026-10-29
+    location: Long Beach Convention Center
+    date_confirmed: true
+    recurs_annually: false
+    cc_friendly: true
+    eligibility: Undergrads including community college students, at the student rate.
+    summary: The biggest diversity in STEM conference in the country, and this year it is in Long Beach, October 29 to 31. Huge career and grad school fair.
+    notes: Oct 4 is when the regular rate ends. Late registration stays open until the conference.
+    roles: ["Engineering", "Natural Sciences", "Computer Science", "Math & Data"]
+    tags: [conference]
+
+  - name: SCCUR 2026 abstracts
+    category: conference
+    org: Southern California Conference for Undergraduate Research
+    url: https://research.sdsu.edu/sccur-2026
+    deadline: 2026-10-09
+    event_date: 2026-11-21
+    location: San Diego State University
+    date_confirmed: true
+    recurs_annually: false
+    cc_friendly: true
+    remind_days: [21, 7, 2]
+    eligibility: Any undergrad, any major, any school.
+    summary: A friendly one day research conference. Great first place to present a poster, and a class project counts.
+    notes: Presenters register by Nov 8. Early bird price is $90 through Oct 23.
+    roles: ["Engineering", "Natural Sciences", "Computer Science", "Math & Data", "Business"]
+    tags: [conference]
+
+  - name: LA Hacks AI Hackathon
+    category: conference
+    org: LA Hacks
+    url: https://www.lahacks.com/
+    deadline: 2026-10-17
+    deadline_label: Starts
+    location: Los Angeles
+    date_confirmed: true
+    recurs_annually: false
+    remind_days: [21, 7]
+    eligibility: Open to students. Check the apply page for details.
+    summary: AI themed hackathon from the LA Hacks team, October 17 to 18. Apply early, the application deadline is not posted.
+    roles: ["Computer Science", "Engineering", "Math & Data"]
+    tags: [conference]
+
+  - name: APS Global Physics Summit abstracts
+    category: conference
+    org: American Physical Society
+    url: https://summit.aps.org/
+    deadline: 2026-10-22
+    event_date: 2027-04-11
+    location: Atlanta, GA or online (undergrad travel grants)
+    date_confirmed: true
+    recurs_annually: true
+    cc_friendly: true
+    remind_days: [21, 7, 2]
+    eligibility: Undergrads can submit under the Undergraduate Research category. APS student membership is free the first year.
+    summary: The biggest physics meeting of the year, April 11 to 16. Undergrad presenters can get travel money, and there is an online option.
+    roles: ["Natural Sciences", "Engineering", "Math & Data", "Computer Science"]
+    tags: [conference]
+
+  - name: Grace Hopper Celebration 2026
+    category: conference
+    org: AnitaB.org
+    url: https://ghc.anitab.org/join-us-in-anaheim
+    deadline: 2026-10-27
+    deadline_label: Starts
+    location: Anaheim Convention Center
+    date_confirmed: true
+    recurs_annually: false
+    remind_days: [21, 7]
+    eligibility: Paid registration. Check the site for student pricing and scholarships.
+    summary: Huge women in tech conference and career fair, October 27 to 30, close by in Anaheim.
+    roles: ["Computer Science", "Engineering", "Math & Data"]
+    tags: [conference]
+
+  - name: AAS 249 FAMOUS Travel Grant
+    category: conference
+    org: American Astronomical Society
+    url: https://aas.org/grants-and-prizes/famous-travel-grants
+    deadline: 2026-11-02
+    event_date: 2027-01-10
+    location: Salt Lake City, UT
+    date_confirmed: true
+    recurs_annually: false
+    stipend: Up to $1,000 for travel, food and hotel
+    eligibility: AAS members presenting at the meeting. Priority for students from small colleges and underrepresented groups.
+    summary: Money to get to the AAS winter meeting if you are presenting there.
+    roles: ["Natural Sciences", "Math & Data", "Computer Science"]
+    tags: [conference]
+
+  - name: NASA Space Apps Challenge 2026
+    category: conference
+    org: NASA
+    url: https://www.spaceappschallenge.org/2026/
+    deadline: 2026-11-14
+    deadline_label: Starts
+    location: Online or at a local site
+    date_confirmed: true
+    recurs_annually: false
+    cc_friendly: true
+    remind_days: [30, 14, 3]
+    eligibility: Anyone can join, free.
+    summary: NASA's free global hackathon, November 14 to 15. You don't need to code to be useful on a team. Could be a fun club team.
+    roles: ["Computer Science", "Engineering", "Natural Sciences", "Math & Data", "Business"]
+    tags: [conference]
+
+  - name: DiamondHacks 2027 (UC San Diego)
+    category: conference
+    org: UC San Diego
+    url: https://www.mlh.com/seasons/2027/events/
+    deadline: 2027-04-04
+    deadline_label: Starts
+    location: La Jolla
+    date_confirmed: true
+    recurs_annually: false
+    remind_days: [30, 7]
+    eligibility: Check the event page for who can apply.
+    summary: UCSD's student hackathon, April 4 to 5. A good excuse to see the campus if you are transferring there.
+    roles: ["Computer Science", "Engineering", "Math & Data"]
+    tags: [conference]
+
+  - name: LA Hacks 2027
+    category: conference
+    org: LA Hacks
+    url: https://www.lahacks.com/
+    deadline: 2027-04-16
+    deadline_label: Starts
+    location: Pauley Pavilion, UCLA
+    date_confirmed: true
+    recurs_annually: false
+    remind_days: [45, 14, 3]
+    eligibility: Check apply.lahacks.com for who can apply.
+    summary: Free hackathon at UCLA with over 1,000 students, April 16 to 18.
+    roles: ["Computer Science", "Engineering", "Math & Data", "Business"]
+    tags: [conference]
+
+  - name: AAS 250 Summer Meeting (online)
+    category: conference
+    org: American Astronomical Society
+    url: https://aas.org/meetings/future-aas-meetings
+    deadline: 2027-06-21
+    deadline_label: Starts
+    location: Online
+    date_confirmed: true
+    recurs_annually: false
+    cc_friendly: true
+    remind_days: [45, 14, 3]
+    eligibility: Anyone can attend.
+    summary: Fully online astronomy meeting, June 21 to 25. No travel needed. The abstract deadline will be earlier, so check the site.
+    roles: ["Natural Sciences", "Math & Data", "Computer Science"]
+    tags: [conference]
+
+  # ------------------------------------------------- talks and workshops
+
+  - name: UCLA Physics and Astronomy Colloquium, Ken Dill
+    category: talk
+    org: UCLA
+    url: https://www.pa.ucla.edu/physics-and-astronomy-colloquium.php
+    deadline: 2026-10-08
+    location: UCLA, PAB 1-434, Thursday 4 to 5 PM
+    date_confirmed: true
+    recurs_annually: false
+    summary: Ken Dill on the molecular origins of life. Next one is Oct 22 on superfluid helium-3.
+    notes: This is a department colloquium, so it is not advertised to the public. It is usually fine to sit in, but check the page first.
+    roles: ["Natural Sciences"]
+    tags: [talk]
+
+  - name: Griffith Observatory All Space Considered
+    category: talk
+    org: Griffith Observatory
+    url: https://griffithobservatory.lacity.gov/visit/calendar/all-space-considered/
+    deadline: 2026-10-15
+    location: Griffith Observatory or YouTube livestream, 7 PM
+    date_confirmed: false
+    recurs_annually: false
+    summary: Free monthly astronomy news show, usually the third Thursday of the month.
+    roles: ["Natural Sciences"]
+    tags: [talk]
+
+  - name: Mount Wilson Talks and Telescopes
+    category: talk
+    org: Mount Wilson Observatory
+    url: https://www.mtwilson.edu/events/categories/talks-telescopes/
+    deadline: 2026-10-17
+    location: Mount Wilson Observatory, 5:30 to 11:30 PM
+    date_confirmed: true
+    recurs_annually: false
+    remind_days: [14, 3]
+    summary: An evening talk about George Ellery Hale, then looking through the big telescopes on the mountain.
+    notes: Tickets are needed. Dress warm, it gets cold up there at night.
+    roles: ["Natural Sciences", "Engineering"]
+    tags: [talk]
+
+  - name: Caltech Watson Lecture, Katie Bouman
+    category: talk
+    org: Caltech
+    url: https://events.caltech.edu/series/watson
+    deadline: 2026-11-04
+    location: Beckman Auditorium, Caltech
+    date_confirmed: true
+    recurs_annually: false
+    summary: Katie Bouman, who helped take the first picture of a black hole, on physics and AI. Free.
+    notes: Registration is already full, but there is a standby line at the door.
+    roles: ["Natural Sciences", "Computer Science", "Engineering", "Math & Data"]
+    tags: [talk]
+
+  - name: Caltech Watson Lecture, Sarkis Mazmanian
+    category: talk
+    org: Caltech
+    url: https://events.caltech.edu/series/watson
+    deadline: 2026-10-21
+    deadline_label: Registration opens
+    event_date: 2026-12-02
+    location: Beckman Auditorium, Caltech
+    date_confirmed: true
+    recurs_annually: false
+    remind_days: [7, 0]
+    summary: How the bacteria in your gut talk to your brain. Free, but seats go fast, so register the day it opens.
+    roles: ["Natural Sciences"]
+    tags: [talk]
+
+  - name: Caltech Watson Lecture, Linda Spilker
+    category: talk
+    org: Caltech
+    url: https://events.caltech.edu/series/watson
+    deadline: 2026-12-16
+    deadline_label: Registration opens
+    event_date: 2027-01-27
+    location: Beckman Auditorium, Caltech
+    date_confirmed: true
+    recurs_annually: false
+    remind_days: [7, 0]
+    summary: JPL's Linda Spilker on the edge of the solar system and interstellar space. Free, but register the day it opens.
+    roles: ["Natural Sciences", "Engineering"]
+    tags: [talk]
+
+  - name: Caltech Watson Lecture, David Conlon
+    category: talk
+    org: Caltech
+    url: https://events.caltech.edu/series/watson
+    deadline: 2027-02-24
+    deadline_label: Registration opens
+    event_date: 2027-04-07
+    location: Beckman Auditorium, Caltech
+    date_confirmed: true
+    recurs_annually: false
+    remind_days: [7, 0]
+    summary: A public math talk on combinatorics. Free, but register the day it opens.
+    roles: ["Math & Data", "Computer Science"]
+    tags: [talk]
