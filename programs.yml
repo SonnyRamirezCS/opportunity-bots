@@ -18,7 +18,8 @@
 #   roles                 which Discord roles get pinged
 #   tags                  used for forum tags if you set those up
 #   cc_friendly           true if community college students are eligible
-#   category              internship, research, scholarship, conference or talk
+#   category              internship, research, scholarship, conference, talk
+#                         or transfer
 #                         (if left out, the first tag is used)
 #   event_date            when the thing actually happens, if that is not
 #                         the same as the deadline (conferences)
@@ -246,7 +247,7 @@ programs:
   # --------------------------------------------------- more scholarships
 
   - name: UC Transfer Application, Fall 2027
-    category: scholarship
+    category: transfer
     org: University of California
     url: https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-transfer/
     deadline: 2026-11-30
@@ -640,3 +641,34 @@ programs:
     summary: A public math talk on combinatorics. Free, but register the day it opens.
     roles: ["Math & Data", "Computer Science"]
     tags: [talk]
+
+  # ------------------------------------------------------------ transfer
+
+  - name: Cal State Apply, Fall 2027 (CSUN and other CSUs)
+    category: transfer
+    org: California State University
+    url: https://www.calstate.edu/apply
+    deadline: 2026-11-30
+    date_confirmed: true
+    recurs_annually: true
+    cc_friendly: true
+    remind_days: [45, 21, 7, 2]
+    eligibility: Community college students transferring to a CSU.
+    summary: The CSU application is open October 1 to November 30. Most campuses, CSUN included, use this date, but double check the campus you want.
+    notes: Worth sending even if a UC is your first choice, as a backup.
+    roles: ["Engineering", "Natural Sciences", "Computer Science", "Math & Data", "Business"]
+    tags: [transfer]
+
+  - name: UC Transfer Academic Update
+    category: transfer
+    org: University of California
+    url: https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-transfer/
+    deadline: 2027-01-31
+    date_confirmed: false
+    recurs_annually: true
+    cc_friendly: true
+    remind_days: [21, 7, 2]
+    eligibility: Everyone who sent a UC application for fall 2027.
+    summary: Add your fall grades and spring classes to your UC application. If you skip it, campuses may not see your latest grades.
+    roles: ["Engineering", "Natural Sciences", "Computer Science", "Math & Data", "Business"]
+    tags: [transfer]

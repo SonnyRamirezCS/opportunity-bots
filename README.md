@@ -36,6 +36,20 @@ Posts get forum tags automatically (Internship, REU, Scholarship, Conference,
 Talk/Workshop, plus Deadline on anything you apply for) once the tag IDs are
 in `config.yml`. The steps to find them are written right above that section.
 
+**Closed replies.** The day after a real deadline passes, the bot replies
+"this one is closed" inside that post so nobody applies to a dead link.
+
+**Weekly digest.** Every Monday, one message in #announcements listing
+everything in the next two weeks, each linked to its forum post. No pings.
+Needs the `DISCORD_ANNOUNCE_WEBHOOK_URL` secret.
+
+**Monthly officer check-up.** On the 1st, a to-do list in #task-board: dates
+that still need checking, and posts that need the Closed tag. Needs the
+`DISCORD_TASKBOARD_WEBHOOK_URL` secret.
+
+Settings for both are under `extras` in `config.yml`. To preview them:
+`python run.py --dry-run --force-extras --only digest` (or `--only checkup`).
+
 Talks remind 7 days and 1 day before. Everything else reminds 45, 21, 7 and 2
 days before. Any program can override that with `remind_days`.
 
@@ -154,6 +168,7 @@ president knows it is their job.
 | `programs.yml` | the deadline calendar you maintain |
 | `sources.py` | fetchers for the Simplify list and any RSS feed |
 | `deadlines.py` | works out which reminders are due |
+| `extras.py` | closed replies, weekly digest, monthly check-up |
 | `discord_client.py` | builds and sends the webhook post |
 | `state.py` | `seen.json` and `threads.json` |
 | `seen.json` | every reminder already sent, so nothing posts twice |

@@ -18,6 +18,10 @@ COLORS = {
     "scholarship": 0xFEE75C,
     "conference": 0xEB459E,
     "talk": 0x3BA55C,
+    "transfer": 0x00A8FC,
+    "digest": 0x5865F2,
+    "checkup": 0xF0B232,
+    "closed": 0x4E5058,
     "deadline": 0xED4245,
 }
 
@@ -59,6 +63,8 @@ class DiscordPoster:
             print(f"  roles: {item.get('role_names') or item.get('role_ids') or 'none'}")
             if item.get("lead"):
                 print(f"  {item['lead']}")
+            if item.get("description") and item["kind"] in ("digest", "checkup", "closed"):
+                print("  " + item["description"].replace("\n", "\n  "))
             for field in _normalize_fields(item.get("fields", [])):
                 print(f"  {field[0]}: {field[1]}")
             if item.get("footer"):
@@ -110,7 +116,7 @@ class DiscordPoster:
             ],
         }
         if item.get("description"):
-            embed["description"] = item["description"][:1500]
+            embed["description"] = item["description"][:4000]
         if item.get("footer"):
             embed["footer"] = {"text": item["footer"][:2040]}
 

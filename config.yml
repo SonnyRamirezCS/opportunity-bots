@@ -8,6 +8,11 @@ channel_type: forum
 bot_username: Opportunity Bot
 bot_avatar_url:            # optional, paste an image URL
 
+# Your server and the #opportunities forum, used to link to posts.
+guild_id: "1413638468650799116"
+forum_channel_id: "1550215652076429526"
+repo_url: https://github.com/SonnyRamirezCS/opportunity-bots
+
 state_file: seen.json
 threads_file: threads.json   # which forum post belongs to which program
 max_posts_per_run: 8       # hard cap so the channel never gets flooded
@@ -115,6 +120,23 @@ forum_tag_ids:
   conference: "1550215836420014120"     # Conference
   talk: "1553894640208445460"           # Talk/Workshop
   deadline: "1550215732330110996"       # Deadline
+
+# ----------------------------------------------------------------- extras
+# Each of these posts to a different channel, so each needs its own webhook.
+# Make the webhook in that channel (gear > Integrations > Webhooks > New
+# Webhook > Copy Webhook URL), then add it as a GitHub repo secret with the
+# name shown under webhook_secret. No secret means that part just stays off.
+extras:
+  weekly_digest:           # one message in #announcements with the next 2 weeks
+    enabled: true
+    webhook_secret: DISCORD_ANNOUNCE_WEBHOOK_URL
+    weekday: 0             # 0 is Monday
+    days_ahead: 14
+  officer_checkup:         # monthly to-do list in #task-board
+    enabled: true
+    webhook_secret: DISCORD_TASKBOARD_WEBHOOK_URL
+    day_of_month: 1
+    days_ahead: 75
 
 # ------------------------------------------------------------------ feeds
 feeds:

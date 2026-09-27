@@ -30,6 +30,8 @@ jobs:
       - name: Run the bot
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_ANNOUNCE_WEBHOOK_URL: ${{ secrets.DISCORD_ANNOUNCE_WEBHOOK_URL }}
+          DISCORD_TASKBOARD_WEBHOOK_URL: ${{ secrets.DISCORD_TASKBOARD_WEBHOOK_URL }}
         run: |
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             python run.py --dry-run

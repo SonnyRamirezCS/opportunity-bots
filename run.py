@@ -17,6 +17,7 @@ import sys
 import yaml
 
 import deadlines as deadlines_mod
+import extras
 import sources as sources_mod
 from discord_client import DiscordPoster, build_item
 from state import Seen, Threads
@@ -33,13 +34,18 @@ def main():
     ap.add_argument("--programs", default="programs.yml")
     ap.add_argument("--dry-run", action="store_true",
                     help="print instead of posting, and do not touch seen.json")
-    ap.add_argument("--only", choices=["feeds", "deadlines"],
-                    help="run only one half")
+    ap.add_argument("--only", choices=["feeds", "deadlines", "closed", "digest", "checkup"],
+                    help="run only one part")
+    ap.add_argument("--force-extras", action="store_true",
+                    help="post the digest and check-up now, ignoring the schedule")
+    ap.add_argument("--today", help="pretend today is YYYY-MM-DD (for testing)")
     ap.add_argument("--limit", type=int,
                     help="override max posts for this run")
     args = ap.parse_args()
 
     cfg = load_yaml(args.config)
+    today = dt.date.fromisoformat(args.today) if args.today else dt.date.today()
+    programs = load_yaml(args.programs).get("programs", [])
     webhook = os.environ.get("DISCORD_WEBHOOK_URL", "")
 
     if not webhook and not args.dry_run:
@@ -65,11 +71,18 @@ def main():
     posted = 0
     queue = []
 
-    # ---- deadline reminders first, they are the ones worth seeing
+    # ---- "this one is closed" replies for deadlines that just passed
+    if args.only in (None, "closed"):
+        for item in extras.closed_replies(programs, threads, today):
+            if not seen.has(item["source"], item["id"]):
+                queue.append(item)
+        print(f"\n== closed: {len(queue)} post(s) to mark closed")
+
+    # ---- deadline reminders, the ones worth seeing
     if args.only in (None, "deadlines"):
-        programs = load_yaml(args.programs).get("programs", [])
         print(f"\n== deadlines ({len(programs)} programs tracked)")
-        for prog, target, days_left, mark in deadlines_mod.due_reminders(programs):
+        before = len(queue)
+        for prog, target, days_left, mark in deadlines_mod.due_reminders(programs, today):
             full = deadlines_mod.build_reminder(prog, target, days_left, role_ids, mark)
             if seen.has(full["source"], full["id"]):
                 continue
@@ -87,7 +100,7 @@ def main():
             else:
                 item = full
             queue.append(item)
-        print(f"== deadlines: {len(queue)} due today")
+        print(f"== deadlines: {len(queue) - before} due today")
 
     # ---- feed items
     if args.only in (None, "feeds"):
@@ -145,11 +158,68 @@ def main():
     if skipped:
         print(f"{skipped} item(s) held back for tomorrow so the channel does not flood")
 
+    # ---- weekly digest and monthly check-up, in their own channels
+    guild_id = str(cfg.get("guild_id") or "")
+    forum_id = str(cfg.get("forum_channel_id") or "")
+    extras_cfg = cfg.get("extras") or {}
+
+    if args.only in (None, "digest"):
+        dcfg = extras_cfg.get("weekly_digest") or {}
+        digest = extras.weekly_digest(programs, threads, today, guild_id, forum_id,
+                                      days=dcfg.get("days_ahead", 14))
+        on_schedule = 0 <= today.weekday() - dcfg.get("weekday", 0) <= 2
+        posted += _post_extra("weekly digest", digest, dcfg, on_schedule, args, cfg, seen)
+
+    if args.only in (None, "checkup"):
+        ccfg = extras_cfg.get("officer_checkup") or {}
+        checkup = extras.officer_checkup(programs, threads, today, guild_id,
+                                         repo_url=cfg.get("repo_url"),
+                                         lookahead=ccfg.get("days_ahead", 75))
+        on_schedule = today.day >= ccfg.get("day_of_month", 1)
+        posted += _post_extra("officer check-up", checkup, ccfg, on_schedule, args, cfg, seen)
+
     if not args.dry_run:
         seen.save()
         threads.save()
 
     print(f"\ndone {dt.datetime.now():%Y-%m-%d %H:%M}: posted {posted}")
+
+
+def _post_extra(label, item, section_cfg, on_schedule, args, cfg, seen):
+    """Post the digest or check-up to its own text channel, once per period."""
+    print(f"\n== {label}")
+    if not section_cfg.get("enabled", True):
+        print("  turned off in config.yml")
+        return 0
+    if item is None:
+        print("  nothing to post")
+        return 0
+    if not args.force_extras:
+        if not on_schedule:
+            print("  not scheduled today")
+            return 0
+        if seen.has(item["source"], item["id"]):
+            print("  already posted this period")
+            return 0
+
+    env = section_cfg.get("webhook_secret", "")
+    url = os.environ.get(env, "") if env else ""
+    if not url and not args.dry_run:
+        print(f"  {env} is not set, skipping. Add it as a repo secret to turn this on.")
+        return 0
+
+    poster = DiscordPoster(
+        webhook_url=url,
+        channel_type="text",
+        username=cfg.get("bot_username", "Opportunity Bot"),
+        avatar_url=cfg.get("bot_avatar_url"),
+        dry_run=args.dry_run,
+        pause=cfg.get("seconds_between_posts", 2.0),
+    )
+    result = poster.post(item)
+    if result and not args.dry_run:
+        seen.add(item["source"], item["id"])
+    return 1 if result else 0
 
 
 def _tags_for(names, tag_ids):
